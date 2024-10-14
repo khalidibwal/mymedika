@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, Image, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, Image, StyleSheet, Alert, KeyboardAvoidingView } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRecoilState } from 'recoil';
@@ -8,39 +8,88 @@ import { useNavigation } from '@react-navigation/native';
 import { API_URL } from '@env';
 import LinearGradient from 'react-native-linear-gradient';
 
-const LoginScreen = () => {
+const RegisterScreen = () => {
+  const [nik, setNik] = useState(null);
+  const [bpjs, setBPJS] = useState(null);
+  const [telp, setTelp] = useState(null);
+  const [alamat, setAlamat] = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
   const [loading, setLoading] = useState(false); 
   const [user, setUser] = useRecoilState(userState);
   const navigation = useNavigation();
 
+  const validateInputs = () => {
+    if (!name || !email || !password || !passwordConfirm) {
+      Alert.alert('Whoops..', 'Please fill all required fields.');
+      return false;
+    }
+    if (password !== passwordConfirm) {
+      Alert.alert('Error', 'Passwords do not match.');
+      return false;
+    }
+    // Additional validations can be added here
+    return true;
+  };
+  
+
   const handleLogin = async () => {
     setLoading(true);
+  
+    // Validate inputs before sending to the server
+    if (!validateInputs()) {
+      setLoading(false);
+      return; // Exit early if validation fails
+    }
+  
     try {
-      const response = await axios.post(`${API_URL}/api/login`, { email, password });
+      const response = await axios.post(`${API_URL}/api/register`, {
+        name,
+        nik,
+        email,
+        password,
+        password_confirmation: passwordConfirm,
+        bpjs,
+        telp,
+        alamat,
+      });
+  
       const { access_token, user } = response.data;
-
+  
       if (access_token) {
         await AsyncStorage.setItem('access_token', access_token);
         setUser(user);
-        Alert.alert('Login Successful', `Welcome, ${user.name}!`);
+        Alert.alert('Registration Successful', `Welcome, ${user.name}!`);
         navigation.navigate('Home');
       }
     } catch (error) {
       console.error(error);
-      Alert.alert('Login Failed', 'Invalid credentials. Please try again.');
+      if (error.response) {
+        const errors = error.response.data; // Get the error response
+        const errorMessages = [];
+  
+        // Collect error messages for each field
+        for (const [key, value] of Object.entries(errors)) {
+          errorMessages.push(...value); // Spread the array of messages into the main array
+        }
+  
+        Alert.alert('Registration Failed', errorMessages.join('\n') || 'Please try again.');
+      } else {
+        Alert.alert('Whoops...', 'Something went wrong. Please try again later.');
+      }
     } finally {
       setLoading(false);
     }
   };
+  
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container}>
       <View style={styles.loginCard}>
         {/* Sign In and Register Buttons at the Top */}
         <View style={styles.buttonContainer}>
-          
           <TouchableOpacity style={styles.navButton} onPress={() => navigation.navigate('login')}>
             <Text style={styles.navButtonText}>Sign In</Text>
           </TouchableOpacity>
@@ -52,16 +101,31 @@ const LoginScreen = () => {
 
         {/* Inner Card for Input and Button */}
         <View style={styles.innerCard}>
-          <Text style={styles.formTitle}>Email</Text>
+        <TextInput
+            style={styles.input}
+            placeholder="NIK (Boleh dikosongkan)"
+            value={nik}
+            onChangeText={setNik}
+          />
+        <TextInput
+            style={styles.input}
+            placeholder="Nama"
+            value={name}
+            onChangeText={setName}
+          />
+        <TextInput
+            style={styles.input}
+            placeholder="Telpon"
+            value={telp}
+            onChangeText={setTelp}
+            keyboardType='numeric'
+          />
           <TextInput
             style={styles.input}
             placeholder="Email"
             value={email}
             onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
           />
-          <Text style={styles.formTitle}>Password</Text>
           <TextInput
             style={styles.input}
             placeholder="Password"
@@ -69,19 +133,23 @@ const LoginScreen = () => {
             onChangeText={setPassword}
             secureTextEntry
           />
-          <LinearGradient 
+          <TextInput
+            style={styles.input}
+            placeholder="Konfirmasi Password"
+            value={passwordConfirm}
+            onChangeText={setPasswordConfirm}
+            secureTextEntry
+          />
+            <LinearGradient 
               colors={['#90EE90', '#004B73']} // Left color to right color
               start={{ x: 0, y: 0 }} // Start from the left
               end={{ x: 0.5, y: 0 }} // End at the right
               style={styles.button}
             >
-          <TouchableOpacity onPress={handleLogin} disabled={loading}>
-            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Sign in</Text>}
+          <TouchableOpacity  onPress={handleLogin} disabled={loading}>
+            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Sign up</Text>}
           </TouchableOpacity>
           </LinearGradient>
-          <TouchableOpacity>
-            <Text style={styles.forgotPassword}>Forgot Password?</Text>
-          </TouchableOpacity>
         </View>
 
         {/* Logo and text placed inside the card at the bottom */}
@@ -90,7 +158,7 @@ const LoginScreen = () => {
           <Image source={require('../../../Assets/image/puspitalogo.png')} style={styles.logo} />
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -101,7 +169,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'grey',
   },
   loginCard: {
-    height: '75%',
+    height: '100%',
     backgroundColor: 'white',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
@@ -200,10 +268,6 @@ const styles = StyleSheet.create({
     bottom: 5,
     color: 'red',
   },
-  formTitle:{
-    color:'black',
-    fontSize:15
-  }
 });
 
-export default LoginScreen;
+export default RegisterScreen;
