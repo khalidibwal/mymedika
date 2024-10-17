@@ -1,6 +1,9 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient'; // Import LinearGradient
+import menuIcon1 from '../../../Assets/image/back.png'; // Replace with your icon paths
+import menuIcon2 from '../../../Assets/image/Calendar.png'; // Replace with your icon paths
+import menuIcon3 from '../../../Assets/image/User.png'; // Replace with your icon paths
 
 const Footer = () => {
   return (
@@ -11,13 +14,13 @@ const Footer = () => {
       style={styles.footerContainer}
     >
       <TouchableOpacity style={styles.menuItem}>
-        <Text style={styles.menuText}>Menu 1</Text>
+        <Image source={menuIcon1} style={styles.menuIcon} />
       </TouchableOpacity>
       <TouchableOpacity style={styles.menuItem}>
-        <Text style={styles.menuText}>Menu 2</Text>
+        <Image source={menuIcon2} style={styles.menuIcon} />
       </TouchableOpacity>
       <TouchableOpacity style={styles.menuItem}>
-        <Text style={styles.menuText}>Menu 3</Text>
+        <Image source={menuIcon3} style={styles.menuIcon} />
       </TouchableOpacity>
     </LinearGradient>
   );
@@ -40,14 +43,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     padding: 10,
-    borderRadius: 10,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    marginHorizontal: 5,
   },
-  menuText: {
-    fontSize: 16,
-    color: '#007BFF', // Color for the menu text
+  menuIcon: {
+    width: 30, // Adjust size as needed
+    height: 30,
   },
 });
 

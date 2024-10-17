@@ -1,14 +1,22 @@
 import React, { useEffect } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const FirstLoadScreen = ({ navigation }) => {
-  // Logic to navigate to another screen after 3 seconds
   useEffect(() => {
-    const timer = setTimeout(() => {
-      navigation.replace('login');
-    }, 3000);
+    const checkLoginStatus = async () => {
+      const token = await AsyncStorage.getItem('access_token');
+      if (token) {
+        // If token exists, navigate to Home
+        navigation.replace('Home');
+      } else {
+        // If no token, navigate to Login
+        navigation.replace('login');
+      }
+      
+    };
 
-    return () => clearTimeout(timer);
+    checkLoginStatus();
   }, [navigation]);
 
   return (
@@ -18,6 +26,9 @@ const FirstLoadScreen = ({ navigation }) => {
         <Image source={require('../../../Assets/image/mymedikalogo.png')} style={styles.logo} />
         <Text style={styles.centeredText}>MyMedika</Text>
       </View>
+
+      {/* Loading indicator while checking token */}
+      <ActivityIndicator size="large" color="#002A49" />
 
       {/* Fixed logo and text at the bottom */}
       <View style={styles.bottomContent}>
@@ -44,7 +55,7 @@ const styles = StyleSheet.create({
     height: 100,
     marginRight: 10, // Adds space between logo and text
   },
-  logoBottom:{
+  logoBottom: {
     width: 50, // Adjust the size as needed
     height: 50,
     marginRight: 10,
@@ -52,7 +63,7 @@ const styles = StyleSheet.create({
   centeredText: {
     fontSize: 20, // Adjust font size as needed
     fontWeight: 'bold',
-    color:'#002A49'
+    color: '#002A49',
   },
   bottomContent: {
     flexDirection: 'row', // Arranges logo and text in the same row
