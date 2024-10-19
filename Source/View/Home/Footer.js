@@ -1,11 +1,16 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient'; // Import LinearGradient
 import menuIcon1 from '../../../Assets/image/back.png'; // Replace with your icon paths
 import menuIcon2 from '../../../Assets/image/Calendar.png'; // Replace with your icon paths
 import menuIcon3 from '../../../Assets/image/User.png'; // Replace with your icon paths
 
-const Footer = () => {
+const Footer = ({onBackPress}) => {
+  const navigation = useNavigation()
+  const toBooking = () => {
+    navigation.navigate('book')
+  }
   return (
     <LinearGradient 
       colors={['#90EE90', '#004B73']} // Left color to right color
@@ -13,10 +18,10 @@ const Footer = () => {
       end={{ x: 0.5, y: 0 }} // End at the right
       style={styles.footerContainer}
     >
-      <TouchableOpacity style={styles.menuItem}>
+      <TouchableOpacity style={styles.menuItem} onPress={onBackPress}>
         <Image source={menuIcon1} style={styles.menuIcon} />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.menuItem}>
+      <TouchableOpacity style={styles.menuItem} onPress={toBooking}>
         <Image source={menuIcon2} style={styles.menuIcon} />
       </TouchableOpacity>
       <TouchableOpacity style={styles.menuItem}>

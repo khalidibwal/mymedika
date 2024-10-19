@@ -8,6 +8,8 @@ import FirstLoadScreen from '../View/Auth/FirstLoadScreen';
 import LoginScreen from '../View/Auth/Login';
 import RegisterScreen from '../View/Auth/Register';
 import MainScreen from '../View/Home/MainScreen';
+import Booking from '../View/Book/Booking';
+import BookingCardScreen from '../View/Book/BookingCardScreen';
 
 
 
@@ -21,6 +23,8 @@ function MainStackNavigator() {
         <Stack.Screen name="login" component={LoginScreen} options={{headerShown: false}}/>
         <Stack.Screen name="register" component={RegisterScreen} options={{headerShown: false}}/>
         <Stack.Screen name="Home" component={MainScreen} options={{headerShown: false}}/>
+        <Stack.Screen name="book" component={Booking} options={{headerShown: false}}/>
+        <Stack.Screen name="BookingCardScreen" component={BookingCardScreen} options={{headerShown: false}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

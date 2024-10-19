@@ -69,16 +69,16 @@ const LoginScreen = () => {
             onChangeText={setPassword}
             secureTextEntry
           />
+           <TouchableOpacity onPress={handleLogin} disabled={loading}>
           <LinearGradient 
               colors={['#90EE90', '#004B73']} // Left color to right color
               start={{ x: 0, y: 0 }} // Start from the left
               end={{ x: 0.5, y: 0 }} // End at the right
               style={styles.button}
-            >
-          <TouchableOpacity onPress={handleLogin} disabled={loading}>
+            >     
             {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Sign in</Text>}
-          </TouchableOpacity>
           </LinearGradient>
+          </TouchableOpacity>
           <TouchableOpacity>
             <Text style={styles.forgotPassword}>Forgot Password?</Text>
           </TouchableOpacity>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, ActivityIndicator, Text, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, Text, TouchableOpacity, Image, Alert } from 'react-native';
 import Header from './Header';
 import Footer from './Footer';
 import { userState } from '../../Global/Auth/UserGlobal';
@@ -16,12 +16,32 @@ import data_D from '../../../Assets/image/datadokter.png';
 import rekam_O from '../../../Assets/image/rekamobat.png';
 import poli from '../../../Assets/image/poli.png';
 import laporan from '../../../Assets/image/laporan.png';
+import { useNavigation } from '@react-navigation/native';
 
 const MainScreen = () => {
+  const navigation = useNavigation()
   const [auth, setAuth] = useRecoilState(userState);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const handleBackPress = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    } else {
+      // Custom behavior on the home screen
+      Alert.alert(
+        'Exit MyMedika',
+        'Do you really want to exit the app?',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'Yes', onPress: () => BackHandler.exitApp() }, // Import BackHandler from 'react-native'
+        ],
+        { cancelable: false }
+      );
+    }
+  };
+  
 
   const getUserdata = async () => {
     try {
@@ -71,7 +91,7 @@ const MainScreen = () => {
         <MenuRow name='Laporan' icon={laporan}/>
         </View>
       </View>
-      <Footer />
+      <Footer onBackPress={handleBackPress}/>
     </View>
   );
 };
