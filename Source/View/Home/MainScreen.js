@@ -43,28 +43,68 @@ const MainScreen = () => {
   };
   
 
-  const getUserdata = async () => {
-    try {
-      const token = await AsyncStorage.getItem('access_token');
-      const response = await axios.get(`${API_URL}/api/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log('user', response.data);
-      setUserData(response.data);
-      setAuth(response.data);
-    } catch (err) {
-      console.error('Error fetching user data', err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const getUserdata = async () => {
+  //   try {
+  //     const token = await AsyncStorage.getItem('access_token');
+  //     const response = await axios.get(`${API_URL}/api/me`, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     console.log('user', response.data);
+  //     setUserData(response.data);
+  //     setAuth(response.data);
+  //   } catch (err) {
+  //     console.error('Error fetching user data', err);
+  //     setError(err.message);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+
 
   useEffect(() => {
-    getUserdata();
-  }, []);
+      const fetchUser = async () => {
+          try {
+              // Retrieve the token from AsyncStorage
+              const token = await AsyncStorage.getItem('access_token');
+              
+              if (!token) {
+                  // If token doesn't exist, navigate to login
+                  navigation.navigate('login'); // Adjust the screen name as necessary
+                  return;
+              }
+
+              // Fetch the user data
+              const response = await fetch(`${API_URL}/api/me`, {
+                  method: 'GET',
+                  headers: {
+                      'Authorization': `Bearer ${token}`,
+                      'Content-Type': 'application/json',
+                  },
+              });
+
+              if (!response.ok) {
+                  // If response is not ok, navigate to login
+                  navigation.navigate('login'); // Adjust the screen name as necessary
+                  return;
+              }
+
+              const userData = await response.json();
+              // Do something with the user data, like updating state
+              console.log(userData);
+              setLoading(false)
+          } catch (error) {
+            setLoading(false)
+              console.error('Failed to fetch user:', error);
+              // Navigate to login on error
+              navigation.navigate('login'); // Adjust the screen name as necessary
+          }
+      };
+
+      fetchUser();
+  }, [navigation]);
 
   if (loading) {
     return (

@@ -40,49 +40,54 @@ const RegisterScreen = () => {
   
     // Validate inputs before sending to the server
     if (!validateInputs()) {
-      setLoading(false);
-      return; // Exit early if validation fails
+        setLoading(false);
+        return; // Exit early if validation fails
     }
   
     try {
-      const response = await axios.post(`${API_URL}/api/register`, {
-        name,
-        nik,
-        email,
-        password,
-        password_confirmation: passwordConfirm,
-        bpjs,
-        telp,
-        alamat,
-      });
+        const response = await axios.post(`${API_URL}/api/register`, {
+            name,
+            nik,
+            email,
+            password,
+            password_confirmation: passwordConfirm,
+            bpjs,
+            telp,
+            alamat,
+        }, {
+            headers: {
+                'Content-Type': 'application/json', // Add Content-Type header
+            },
+        });
   
-      const { access_token, user } = response.data;
+        const { access_token, user } = response.data;
   
-      if (access_token) {
-        await AsyncStorage.setItem('access_token', access_token);
-        setUser(user);
-        Alert.alert('Registration Successful', `Welcome, ${user.name}!`);
-        navigation.navigate('Home');
-      }
-    } catch (error) {
-      console.error(error);
-      if (error.response) {
-        const errors = error.response.data; // Get the error response
-        const errorMessages = [];
-  
-        // Collect error messages for each field
-        for (const [key, value] of Object.entries(errors)) {
-          errorMessages.push(...value); // Spread the array of messages into the main array
+        if (access_token) {
+            await AsyncStorage.setItem('access_token', access_token);
+            setUser(user);
+            Alert.alert('Registration Successful', `Welcome, ${user.name}!`);
+            navigation.navigate('Home');
         }
+    } catch (error) {
+        console.error(error);
+        if (error.response) {
+            const errors = error.response.data; // Get the error response
+            const errorMessages = [];
   
-        Alert.alert('Registration Failed', errorMessages.join('\n') || 'Please try again.');
-      } else {
-        Alert.alert('Whoops...', 'Something went wrong. Please try again later.');
-      }
+            // Collect error messages for each field
+            for (const [key, value] of Object.entries(errors)) {
+                errorMessages.push(...value); // Spread the array of messages into the main array
+            }
+  
+            Alert.alert('Registration Failed', errorMessages.join('\n') || 'Please try again.');
+        } else {
+            Alert.alert('Whoops...', 'Something went wrong. Please try again later.');
+        }
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+};
+
   
 
   return (

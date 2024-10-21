@@ -18,7 +18,11 @@ const LoginScreen = () => {
   const handleLogin = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(`${API_URL}/api/login`, { email, password });
+      const response = await axios.post(`${API_URL}/api/login`, { email, password },{
+        headers:{
+          'Content-Type': 'application/json',
+        }
+      });
       const { access_token, user } = response.data;
 
       if (access_token) {
