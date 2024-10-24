@@ -11,6 +11,9 @@ const Footer = ({onBackPress}) => {
   const toBooking = () => {
     navigation.navigate('book')
   }
+  const toProfilePage = () =>{
+    navigation.navigate('profile')
+  }
   return (
     <LinearGradient 
       colors={['#90EE90', '#004B73']} // Left color to right color
@@ -24,7 +27,7 @@ const Footer = ({onBackPress}) => {
       <TouchableOpacity style={styles.menuItem} onPress={toBooking}>
         <Image source={menuIcon2} style={styles.menuIcon} />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.menuItem}>
+      <TouchableOpacity style={styles.menuItem} onPress={toProfilePage}>
         <Image source={menuIcon3} style={styles.menuIcon} />
       </TouchableOpacity>
     </LinearGradient>

@@ -6,14 +6,15 @@ const FirstLoadScreen = ({ navigation }) => {
   useEffect(() => {
     const checkLoginStatus = async () => {
       const token = await AsyncStorage.getItem('access_token');
-      if (token) {
-        // If token exists, navigate to Home
-        navigation.replace('Home');
-      } else {
-        // If no token, navigate to Login
-        navigation.replace('login');
-      }
-      
+      setTimeout(() => {
+        if (token) {
+          // If token exists, navigate to Home after 3 seconds
+          navigation.replace('Home');
+        } else {
+          // If no token, navigate to Login after 3 seconds
+          navigation.replace('login');
+        }
+      }, 3000); // 3-second delay
     };
 
     checkLoginStatus();

@@ -13,7 +13,7 @@ import MenuRow from '../../Component/Main/MenuRow';
 import rekam_M from '../../../Assets/image/rekammedis.png'; // Example icon
 import data_P from '../../../Assets/image/datapasien.png';
 import data_D from '../../../Assets/image/datadokter.png';
-import rekam_O from '../../../Assets/image/rekamobat.png';
+import rekam_O from '../../../Assets/image/chat.png';
 import poli from '../../../Assets/image/poli.png';
 import laporan from '../../../Assets/image/laporan.png';
 import { useNavigation } from '@react-navigation/native';
@@ -41,6 +41,17 @@ const MainScreen = () => {
       );
     }
   };
+
+  const underMaintenance = () =>{
+    navigation.navigate('maintenance')
+  }
+  const toPoliklinik = ()=>{
+    navigation.navigate('poli')
+  }
+  const toAntrian = () =>{
+    navigation.navigate('antrian')
+  }
+
   
 
   // const getUserdata = async () => {
@@ -91,9 +102,12 @@ const MainScreen = () => {
                   return;
               }
 
+
               const userData = await response.json();
               // Do something with the user data, like updating state
               console.log(userData);
+              setUserData(userData);
+              setAuth(userData);
               setLoading(false)
           } catch (error) {
             setLoading(false)
@@ -122,13 +136,13 @@ const MainScreen = () => {
         <CarouselComponent />
         <View style={styles.menuRow}>
         <MenuRow name='Rekam Medis' icon={rekam_M}/>
-        <MenuRow name='Data Pasien' icon={data_P}/>
+        <MenuRow name='Peduli Sesama' icon={data_P} nav={underMaintenance}/>
         <MenuRow name='Data Dokter' icon={data_D}/>
         </View>
         <View style={styles.menuRow}>
-        <MenuRow name='Rekam Obat' icon={rekam_O}/>
-        <MenuRow name='Data Poliklinik' icon={poli}/>
-        <MenuRow name='Laporan' icon={laporan}/>
+        <MenuRow name='Konsultasi Online' icon={rekam_O} nav={underMaintenance}/>
+        <MenuRow name='Data Poliklinik' icon={poli} nav={toPoliklinik}/>
+        <MenuRow name='Antrian' icon={laporan} nav={toAntrian}/>
         </View>
       </View>
       <Footer onBackPress={handleBackPress}/>

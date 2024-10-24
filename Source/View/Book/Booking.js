@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, ActivityIndicator, TextInput, Button, Alert } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, TextInput, TouchableOpacity, Alert, Text } from 'react-native';
 import Header from '../Home/Header';
 import Footer from '../Home/Footer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,7 +8,7 @@ import { API_URL } from '@env';
 import { useNavigation } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
-import BookingCard from '../../Component/Booking/BookingCard'; // Import the BookingCard
+import BookingCard from '../../Component/Booking/BookingCard';
 
 const Booking = () => {
   const navigation = useNavigation();
@@ -18,7 +18,7 @@ const Booking = () => {
   const [tanggalKunjungan, setTanggalKunjungan] = useState(new Date());
   const [loading, setLoading] = useState(true);
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [bookingData, setBookingData] = useState(null); // Store booking data
+  const [bookingData, setBookingData] = useState(null);
 
   const fetchPoliklinik = async () => {
     try {
@@ -44,10 +44,10 @@ const Booking = () => {
 
   const handleBooking = async () => {
     if (!keluhan || !selectedPoliklinik || !tanggalKunjungan) {
-      Alert.alert('Error', 'Please fill all fields');
+      Alert.alert('Terjadi Kesalahan', 'Mohon di Isi Semua Kolom');
       return;
     }
-    
+
     const token = await AsyncStorage.getItem('access_token');
     try {
       const response = await axios.post(
@@ -64,9 +64,9 @@ const Booking = () => {
           },
         }
       );
-      setBookingData(response.data.data); // Store booking data
+      setBookingData(response.data.data);
       const bookingData = response.data.data;
-      navigation.navigate('BookingCardScreen',{bookingData: bookingData}); // Navigate to BookingCardScreen
+      navigation.navigate('BookingCardScreen', { bookingData: bookingData });
     } catch (error) {
       console.error('Error creating booking', error);
       Alert.alert('Error', 'Failed to create booking');
@@ -89,10 +89,10 @@ const Booking = () => {
     <View style={styles.container}>
       <Header />
       <View style={styles.content}>
-        {/* Your existing form components */}
+        <Text style={styles.title}>Booking Dokter</Text>
         <TextInput
           style={styles.textArea}
-          placeholder="Keluhan (max 150 characters)"
+          placeholder="Keluhan (max 150 Kata)"
           value={keluhan}
           onChangeText={setKeluhan}
           multiline
@@ -117,17 +117,23 @@ const Booking = () => {
             }}
           />
         )}
-        <Picker
-          selectedValue={selectedPoliklinik}
-          style={styles.picker}
-          onValueChange={(itemValue) => setSelectedPoliklinik(itemValue)}
-        >
-          <Picker.Item label="Select Poliklinik" value={null} />
-          {poliklinikList.map((poliklinik) => (
-            <Picker.Item key={poliklinik.idPoliklinik} label={poliklinik.namaPoliklinik} value={poliklinik.idPoliklinik} />
-          ))}
-        </Picker>
-        <Button title="Book Appointment" onPress={handleBooking} />
+        <Text style={styles.title}>Pilih Poliklinik :</Text>
+        <Text style={styles.titlePicker}>Pilih Sesuai dengan kebutuhan</Text>
+        <View style={styles.pickerContainer}>
+          <Picker
+            selectedValue={selectedPoliklinik}
+            style={styles.picker}
+            onValueChange={(itemValue) => setSelectedPoliklinik(itemValue)}
+          >
+            <Picker.Item label="Pilih Poliklinik" value={null} />
+            {poliklinikList.map((poliklinik) => (
+              <Picker.Item key={poliklinik.idPoliklinik} label={poliklinik.namaPoliklinik} value={poliklinik.idPoliklinik} />
+            ))}
+          </Picker>
+        </View>
+        <TouchableOpacity style={styles.customButton} onPress={handleBooking}>
+          <Text style={styles.buttonText}>Submit</Text>
+        </TouchableOpacity>
       </View>
       <Footer onBackPress={handleBackPress} />
     </View>
@@ -152,27 +158,56 @@ const styles = StyleSheet.create({
     height: 100,
     borderColor: 'gray',
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 5,
     marginBottom: 20,
     padding: 10,
-    textAlignVertical: 'top', // For Android
+    textAlignVertical: 'top',
   },
   dateInput: {
     height: 50,
     borderColor: 'gray',
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 5,
     marginBottom: 20,
     paddingLeft: 10,
-    backgroundColor: '#f0f0f0', // Light background for clarity
+    backgroundColor: '#f0f0f0',
+  },
+  pickerContainer: {
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+    marginBottom: 20,
+    overflow: 'hidden', // Ensures the border radius applies
   },
   picker: {
     height: 50,
     width: '100%',
-    marginBottom: 20,
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 10,
+    padding: 0,
+  },
+  title: {
+    fontWeight: 'bold',
+    fontSize: 15,
+    padding: 5,
+    color: 'black',
+  },
+  titlePicker: {
+    fontSize: 15,
+    padding: 5,
+  },
+  customButton: {
+    backgroundColor: '#90C0E1', // Background color
+    paddingVertical: 10, // Vertical padding for a smaller button
+    paddingHorizontal: 20, // Horizontal padding
+    borderRadius: 5, // Rounded corners
+    alignItems: 'center', // Center text horizontally
+    justifyContent: 'center',
+    marginBottom: 20, // Space below the button
+    alignSelf: 'center', // Center the button horizontally
+  },
+  buttonText: {
+    color: 'white', // Text color
+    fontSize: 16, // Text size
+    fontWeight: 'bold', // Bold text
   },
 });
 

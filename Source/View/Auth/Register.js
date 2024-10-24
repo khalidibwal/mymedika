@@ -52,7 +52,7 @@ const RegisterScreen = () => {
             password,
             password_confirmation: passwordConfirm,
             bpjs,
-            telp,
+            noTelp: telp,
             alamat,
         }, {
             headers: {
