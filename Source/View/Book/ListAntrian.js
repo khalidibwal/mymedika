@@ -28,11 +28,20 @@ const AntrianList = () => {
           item.status === 'PENDING' || item.status === 'NOW' || item.status === 'CANCELLED'
         );
 
+        // Sort by date
         const sortedAntrian = filteredAntrian.sort((a, b) =>
           new Date(b.tanggal_kunjungan) - new Date(a.tanggal_kunjungan)
         );
 
-        setAntrianList(sortedAntrian);
+        // Get the latest date
+        const latestDate = sortedAntrian[0]?.tanggal_kunjungan;
+
+        // Filter for items with the latest date
+        const latestAntrian = sortedAntrian.filter(item =>
+          item.tanggal_kunjungan === latestDate
+        );
+
+        setAntrianList(latestAntrian);
       } catch (error) {
         console.error('Error fetching Antrian data', error);
         Alert.alert('Error', 'Failed to fetch Antrian data');
@@ -108,13 +117,13 @@ const AntrianList = () => {
               {currentAntrian ? (
                 <>
                   <Text style={styles.modalTitle}>Live Antrian Pada Klinik</Text>
-                  <Text>No Antrian: {currentAntrian.no_antrian}</Text>
-                  <Text style={styles.modalTitle2}>{currentAntrian.no_antrian}</Text>
-                  <Text>Tanggal Kunjungan: {currentAntrian.tanggal_kunjungan}</Text>
-                  <Text>Status: {currentAntrian.status}</Text>
+                  <Text style={styles.modalTitle2}>No Antrian:</Text>
+                  <Text style={styles.modalTitle3}>{currentAntrian.no_antrian}</Text>
+                  <Text style={styles.modalTitle2}>Tanggal Kunjungan: {currentAntrian.tanggal_kunjungan}</Text>
+                  {/* <Text>Status: {currentAntrian.status}</Text> */}
                 </>
               ) : (
-                <Text>No current antrian available.</Text>
+                <Text style={styles.modalTitle}>No current antrian available.</Text>
               )}
               <TouchableOpacity style={styles.closeButton} onPress={handleCloseModal}>
                 <Text style={styles.closeButtonText}>Close</Text>
@@ -146,6 +155,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 5,
+    marginBottom: 10,
   },
   title: {
     fontSize: 25,
@@ -172,11 +182,20 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 15,
+    color:'black'
   },
   modalTitle2: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    marginBottom: 15,
+    color:'black',
+    textAlign:'center'
+  },
+  modalTitle3: {
     fontSize: 30,
     fontWeight: 'bold',
     marginBottom: 15,
+    color:'black'
   },
   closeButton: {
     marginTop: 20,
@@ -193,6 +212,7 @@ const styles = StyleSheet.create({
     bottom: 20,
     left: 20,
     right: 20,
+    marginTop: 10,
   },
   buttonGradient: {
     paddingVertical: 15,

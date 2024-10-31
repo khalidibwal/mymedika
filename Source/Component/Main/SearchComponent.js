@@ -7,6 +7,7 @@ const SearchComponent = () => {
     <View style={styles.container}>
       <TextInput
         placeholder="Search Content"
+        placeholderTextColor="black"
         style={styles.input}
         // You can add onChangeText and other props as needed
       />

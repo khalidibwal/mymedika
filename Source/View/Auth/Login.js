@@ -64,6 +64,7 @@ const LoginScreen = () => {
             onChangeText={setEmail}
             keyboardType="email-address"
             autoCapitalize="none"
+            placeholderTextColor="black"
           />
           <Text style={styles.formTitle}>Password</Text>
           <TextInput
@@ -72,6 +73,7 @@ const LoginScreen = () => {
             value={password}
             onChangeText={setPassword}
             secureTextEntry
+            placeholderTextColor="black"
           />
            <TouchableOpacity onPress={handleLogin} disabled={loading}>
           <LinearGradient 
@@ -168,6 +170,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingHorizontal: 10,
     backgroundColor: '#fff',
+    color: 'black', // Change the text color here
   },
   button: {
     backgroundColor: '#007BFF',

@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
   bottomText: {
     fontSize: 14, // Adjust font size as needed
     marginLeft: 10, // Adds space between logo and text
+    color:'black'
   },
 });
 

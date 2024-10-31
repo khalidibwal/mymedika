@@ -109,18 +109,22 @@ const RegisterScreen = () => {
         <TextInput
             style={styles.input}
             placeholder="NIK (Boleh dikosongkan)"
+            placeholderTextColor="black"
             value={nik}
             onChangeText={setNik}
+            keyboardType='numeric'
           />
         <TextInput
             style={styles.input}
             placeholder="Nama"
+            placeholderTextColor="black"
             value={name}
             onChangeText={setName}
           />
         <TextInput
             style={styles.input}
             placeholder="Telpon"
+            placeholderTextColor="black"
             value={telp}
             onChangeText={setTelp}
             keyboardType='numeric'
@@ -128,12 +132,14 @@ const RegisterScreen = () => {
           <TextInput
             style={styles.input}
             placeholder="Email"
+            placeholderTextColor="black"
             value={email}
             onChangeText={setEmail}
           />
           <TextInput
             style={styles.input}
             placeholder="Password"
+            placeholderTextColor="black"
             value={password}
             onChangeText={setPassword}
             secureTextEntry
@@ -141,20 +147,22 @@ const RegisterScreen = () => {
           <TextInput
             style={styles.input}
             placeholder="Konfirmasi Password"
+            placeholderTextColor="black"
             value={passwordConfirm}
             onChangeText={setPasswordConfirm}
             secureTextEntry
           />
-            <LinearGradient 
+           
+          <TouchableOpacity  onPress={handleLogin} disabled={loading}>
+          <LinearGradient 
               colors={['#90EE90', '#004B73']} // Left color to right color
               start={{ x: 0, y: 0 }} // Start from the left
               end={{ x: 0.5, y: 0 }} // End at the right
               style={styles.button}
             >
-          <TouchableOpacity  onPress={handleLogin} disabled={loading}>
             {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Sign up</Text>}
-          </TouchableOpacity>
           </LinearGradient>
+          </TouchableOpacity>
         </View>
 
         {/* Logo and text placed inside the card at the bottom */}
@@ -237,6 +245,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingHorizontal: 10,
     backgroundColor: '#fff',
+    color: 'black', // Change the text color here
   },
   button: {
     backgroundColor: '#007BFF',

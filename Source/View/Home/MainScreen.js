@@ -51,6 +51,9 @@ const MainScreen = () => {
   const toAntrian = () =>{
     navigation.navigate('antrian')
   }
+  const toRiwayat = () =>{
+    navigation.navigate('riwayat')
+  }
 
   
 
@@ -135,7 +138,7 @@ const MainScreen = () => {
         <SearchComponent />
         <CarouselComponent />
         <View style={styles.menuRow}>
-        <MenuRow name='Rekam Medis' icon={rekam_M}/>
+        <MenuRow name='Rekam Medis' icon={rekam_M} nav={toRiwayat}/>
         <MenuRow name='Peduli Sesama' icon={data_P} nav={underMaintenance}/>
         <MenuRow name='Data Dokter' icon={data_D}/>
         </View>

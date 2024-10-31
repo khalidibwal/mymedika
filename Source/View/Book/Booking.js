@@ -98,6 +98,7 @@ const Booking = () => {
           multiline
           numberOfLines={4}
           maxLength={150}
+          placeholderTextColor='black'
         />
         <TextInput
           style={styles.dateInput}
@@ -162,6 +163,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 10,
     textAlignVertical: 'top',
+    color:'black'
   },
   dateInput: {
     height: 50,
@@ -171,6 +173,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingLeft: 10,
     backgroundColor: '#f0f0f0',
+    color:'black'
   },
   pickerContainer: {
     borderColor: 'gray',
@@ -183,6 +186,7 @@ const styles = StyleSheet.create({
     height: 50,
     width: '100%',
     padding: 0,
+    color:'black'
   },
   title: {
     fontWeight: 'bold',
@@ -193,6 +197,7 @@ const styles = StyleSheet.create({
   titlePicker: {
     fontSize: 15,
     padding: 5,
+    color: 'black',
   },
   customButton: {
     backgroundColor: '#90C0E1', // Background color

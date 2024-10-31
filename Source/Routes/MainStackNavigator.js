@@ -14,6 +14,7 @@ import Main from '../View/Maintenance/Main';
 import MainProfile from '../View/Profile/MainProfile';
 import Poliklinik from '../View/Poli/Poliklinik';
 import AntrianList from '../View/Book/ListAntrian';
+import Riwayat from '../View/History/Riwayat';
 
 
 
@@ -33,6 +34,7 @@ function MainStackNavigator() {
         <Stack.Screen name="profile" component={MainProfile} options={{headerShown: false}}/>
         <Stack.Screen name="poli" component={Poliklinik} options={{headerShown: false}}/>
         <Stack.Screen name="antrian" component={AntrianList} options={{headerShown: false}}/>
+        <Stack.Screen name="riwayat" component={Riwayat} options={{headerShown: false}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
