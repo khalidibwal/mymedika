@@ -1,29 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, ActivityIndicator, Text, TouchableOpacity, Image, Alert } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  StyleSheet,
+  ActivityIndicator,
+  Text,
+  TouchableOpacity,
+  Image,
+  Alert,
+  FlatList,
+} from 'react-native';
 import Header from './Header';
 import Footer from './Footer';
-import { userState } from '../../Global/Auth/UserGlobal';
-import { useRecoilState } from 'recoil';
+import {userState} from '../../Global/Auth/UserGlobal';
+import {useRecoilState} from 'recoil';
 import axios from 'axios';
-import { API_URL } from '@env';
+import {API_URL} from '@env';
 import CarouselComponent from '../../Component/Carousel/CarouselComponent';
 import SearchComponent from '../../Component/Main/SearchComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MenuRow from '../../Component/Main/MenuRow';
-import rekam_M from '../../../Assets/image/rekammedis.png'; // Example icon
+import rekam_M from '../../../Assets/image/rekam-medis.png'; // Example icon
 import data_P from '../../../Assets/image/datapasien.png';
-import data_D from '../../../Assets/image/datadokter.png';
-import rekam_O from '../../../Assets/image/chat.png';
-import poli from '../../../Assets/image/poli.png';
-import laporan from '../../../Assets/image/laporan.png';
-import { useNavigation } from '@react-navigation/native';
+import data_D from '../../../Assets/image/doctor.png';
+import rekam_O from '../../../Assets/image/consult.png';
+import poli from '../../../Assets/image/clinic.png';
+import laporan from '../../../Assets/image/peduli.png';
+import Antrian from '../../../Assets/image/calenders.png';
+import {useNavigation} from '@react-navigation/native';
+import CardDashboard from '../../Component/Card/CardDashboard';
 
 const MainScreen = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const [auth, setAuth] = useRecoilState(userState);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [dokterData, setDokterData] = useState([]);
 
   const handleBackPress = () => {
     if (navigation.canGoBack()) {
@@ -34,93 +46,81 @@ const MainScreen = () => {
         'Exit MyMedika',
         'Do you really want to exit the app?',
         [
-          { text: 'Cancel', style: 'cancel' },
-          { text: 'Yes', onPress: () => BackHandler.exitApp() }, // Import BackHandler from 'react-native'
+          {text: 'Cancel', style: 'cancel'},
+          {text: 'Yes', onPress: () => BackHandler.exitApp()}, // Import BackHandler from 'react-native'
         ],
-        { cancelable: false }
+        {cancelable: false},
       );
     }
   };
 
-  const underMaintenance = () =>{
-    navigation.navigate('maintenance')
+  const underMaintenance = () => {
+    navigation.navigate('maintenance');
+  };
+  const toPoliklinik = () => {
+    navigation.navigate('poli');
+  };
+  const toAntrian = () => {
+    navigation.navigate('antrian');
+  };
+  const toRiwayat = () => {
+    navigation.navigate('riwayat');
+  };
+  const toDokter = () => {
+    navigation.navigate('dokter')
   }
-  const toPoliklinik = ()=>{
-    navigation.navigate('poli')
-  }
-  const toAntrian = () =>{
-    navigation.navigate('antrian')
-  }
-  const toRiwayat = () =>{
-    navigation.navigate('riwayat')
-  }
-
-  
-
-  // const getUserdata = async () => {
-  //   try {
-  //     const token = await AsyncStorage.getItem('access_token');
-  //     const response = await axios.get(`${API_URL}/api/me`, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-  //     console.log('user', response.data);
-  //     setUserData(response.data);
-  //     setAuth(response.data);
-  //   } catch (err) {
-  //     console.error('Error fetching user data', err);
-  //     setError(err.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-
 
   useEffect(() => {
-      const fetchUser = async () => {
-          try {
-              // Retrieve the token from AsyncStorage
-              const token = await AsyncStorage.getItem('access_token');
-              
-              if (!token) {
-                  // If token doesn't exist, navigate to login
-                  navigation.navigate('login'); // Adjust the screen name as necessary
-                  return;
-              }
+    const fetchUser = async () => {
+      try {
+        // Retrieve the token from AsyncStorage
+        const token = await AsyncStorage.getItem('access_token');
 
-              // Fetch the user data
-              const response = await fetch(`${API_URL}/api/me`, {
-                  method: 'GET',
-                  headers: {
-                      'Authorization': `Bearer ${token}`,
-                      'Content-Type': 'application/json',
-                  },
-              });
+        if (!token) {
+          // If token doesn't exist, navigate to login
+          navigation.navigate('login'); // Adjust the screen name as necessary
+          return;
+        }
 
-              if (!response.ok) {
-                  // If response is not ok, navigate to login
-                  navigation.navigate('login'); // Adjust the screen name as necessary
-                  return;
-              }
+        // Fetch the user data
+        const response = await fetch(`${API_URL}/api/me`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
 
+        if (!response.ok) {
+          // If response is not ok, navigate to login
+          navigation.navigate('login'); // Adjust the screen name as necessary
+          return;
+        }
 
-              const userData = await response.json();
-              // Do something with the user data, like updating state
-              console.log(userData);
-              setUserData(userData);
-              setAuth(userData);
-              setLoading(false)
-          } catch (error) {
-            setLoading(false)
-              console.error('Failed to fetch user:', error);
-              // Navigate to login on error
-              navigation.navigate('login'); // Adjust the screen name as necessary
-          }
-      };
-
-      fetchUser();
+        const userData = await response.json();
+        // Do something with the user data, like updating state
+        console.log(userData);
+        setUserData(userData);
+        setAuth(userData);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.error('Failed to fetch user:', error);
+        // Navigate to login on error
+        navigation.navigate('login'); // Adjust the screen name as necessary
+      }
+    };
+    const getDokterData = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/api/dokters`);
+        setDokterData(response.data.data);
+        console.log(dokterData, 'data dokter');
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    getDokterData();
+    fetchUser();
   }, [navigation]);
 
   if (loading) {
@@ -135,20 +135,34 @@ const MainScreen = () => {
     <View style={styles.container}>
       <Header />
       <View style={styles.content}>
-        <SearchComponent />
+        {/* <SearchComponent /> */}
         <CarouselComponent />
         <View style={styles.menuRow}>
-        <MenuRow name='Rekam Medis' icon={rekam_M} nav={toRiwayat}/>
-        <MenuRow name='Peduli Sesama' icon={data_P} nav={underMaintenance}/>
-        <MenuRow name='Data Dokter' icon={data_D}/>
+          <MenuRow name="Antrian" icon={Antrian} nav={toAntrian} />
+          <MenuRow name="Dokter" icon={data_D} nav={toDokter} />
+          <MenuRow name="R.Medis" icon={rekam_M} nav={toRiwayat} />
         </View>
         <View style={styles.menuRow}>
-        <MenuRow name='Konsultasi Online' icon={rekam_O} nav={underMaintenance}/>
-        <MenuRow name='Data Poliklinik' icon={poli} nav={toPoliklinik}/>
-        <MenuRow name='Antrian' icon={laporan} nav={toAntrian}/>
+          <MenuRow name="Konsultasi" icon={rekam_O} nav={underMaintenance} />
+          <MenuRow name="Poliklinik" icon={poli} nav={toPoliklinik} />
+          <MenuRow name="Peduli" icon={laporan} nav={underMaintenance} />
         </View>
+        <FlatList
+          data={dokterData}
+          keyExtractor={item => item.nip.toString()}
+          renderItem={({item}) => {
+            return (
+              <View style={styles.cardStyle}>
+                <CardDashboard
+                  title={item.namaDokter}
+                  spesial={item.spesialis}
+                />
+              </View>
+            );
+          }}
+        />
       </View>
-      <Footer onBackPress={handleBackPress}/>
+      <Footer onBackPress={handleBackPress} />
     </View>
   );
 };
@@ -156,7 +170,7 @@ const MainScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#f9f4f2',
   },
   content: {
     flex: 1,
@@ -170,7 +184,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around', // Space items evenly
     marginVertical: 25, // Add vertical margin,a
-    top:20
+    top: 20,
+  },
+  cardStyle: {
+    width: '90%',
+    alignSelf: 'center',
+    top: 10,
   },
 });
 

@@ -1,40 +1,43 @@
-// SearchComponent.js
 import React from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 
 const SearchComponent = () => {
   return (
-    <View style={styles.container}>
-      <TextInput
-        placeholder="Search Content"
-        placeholderTextColor="black"
-        style={styles.input}
-        // You can add onChangeText and other props as needed
-      />
+    <View style={styles.wrapper}>
+      <View style={styles.container}>
+        <TextInput
+          placeholder="Search Here"
+          placeholderTextColor="black"
+          style={styles.input}
+        />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    justifyContent: 'center',  // Vertical center
+    alignItems: 'center',      // Horizontal center
+  },
   container: {
-    borderRadius: 10,
-    overflow: 'hidden', // Ensures the border radius is applied to the container
-    margin: 20, // Optional: add margin for spacing
-    backgroundColor: 'white', // Set background color to white
-    shadowColor: '#000', // Shadow color
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 1, // Shadow opacity
-    shadowRadius: 4, // Shadow blur radius
-    elevation: 5, // For Android shadow
+    width: '60%',
+    borderRadius: 20,
+    overflow: 'hidden',
+    backgroundColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 1,
+    shadowRadius: 4,
+    elevation: 5,
   },
   input: {
-    height: 50, // Adjust height as necessary
-    paddingHorizontal: 15,
+    padding: 10,
     fontSize: 16,
-    color: '#333', // Text color
+    // color: '#fff',
+    width: '100%',
+    height:40
   },
 });
 

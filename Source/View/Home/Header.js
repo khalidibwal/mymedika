@@ -1,14 +1,13 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import GradientText from '../../Component/TextStyle/GradientText';
+import SearchComponent from '../../Component/Main/SearchComponent';
 
 const Header = () => {
   return (
     <View style={styles.headerContainer}>
-      <Image source={require('../../../Assets/image/mymedikalogo.png')} style={styles.logo} />
-
-      <Text style={styles.headerText}>MyMedika</Text>
+      <View style={styles.searchContainer}>
+        <SearchComponent/>
+      </View> 
     </View>
   );
 };
@@ -17,9 +16,11 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
-    backgroundColor: 'white',
+    padding: 20,
+    backgroundColor: '#2cb1c4',
     elevation: 1, // Optional: for shadow effect
+    borderBottomLeftRadius:10,
+    borderBottomRightRadius:10
   },
   logo: {
     width: 70,
@@ -31,6 +32,9 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color:'#002A49'
   },
+  searchContainer:{
+    flexDirection:'row'
+  }
 });
 
 export default Header;

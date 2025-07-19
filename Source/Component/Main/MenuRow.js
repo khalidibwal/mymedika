@@ -1,16 +1,15 @@
 // MenuRow.js
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 
-
-const MenuRow = ({ name, icon, nav }) => {
+const MenuRow = ({name, icon, nav}) => {
   return (
-    <>
-          <TouchableOpacity style={styles.menuItem} onPress={nav}>
-            <Image source={icon} style={styles.menuIcon} />
-            <Text style={styles.menuText}>{name}</Text>
-          </TouchableOpacity>
-        </>
+    <View style={styles.wrapContainer}>
+      <TouchableOpacity style={styles.menuItem} onPress={nav}>
+        <Image source={icon} style={styles.menuIcon} />
+        <Text style={styles.menuText}>{name}</Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 
@@ -22,17 +21,24 @@ const styles = StyleSheet.create({
   },
   menuItem: {
     alignItems: 'center',
+    paddingVertical:10
   },
   menuIcon: {
-    width: 70, // Adjust size as needed
-    height: 70,
-    marginBottom: 5, // Space between icon and text
+    width: 40, // Adjust size as needed
+    height: 40,
+    marginBottom: 15, // Space between icon and text
   },
   menuText: {
-    fontSize: 16,
+    fontSize: 13,
     textAlign: 'center',
-    color:'black'
+    color: 'black',
   },
+  wrapContainer:{
+    borderRadius:10,
+    backgroundColor:'#fff',
+    width:90,
+    height:90
+  }
 });
 
 export default MenuRow;
