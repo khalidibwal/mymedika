@@ -6,11 +6,14 @@ import {API_URL} from '@env';
 import {useNavigation} from '@react-navigation/native';
 import {Rating} from 'react-native-ratings';
 import Footer from '../Home/Footer';
+import { useSetRecoilState } from 'recoil';
+import { doctorDataState } from '../../Global/doctor/atom';
 
 const DokterTabView = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [tabNames, setTabNames] = useState([]);
   const [allDokters, setAllDokters] = useState([]);
+  const setDataDoctor = useSetRecoilState(doctorDataState)
 
   const navigation = useNavigation();
 
@@ -37,6 +40,11 @@ const DokterTabView = () => {
     d => d.spesialis === tabNames[selectedTab],
   );
 
+  const navigateFormDoctor = (item) =>{
+    navigation.navigate('formdoctor')
+    setDataDoctor(item)
+  }
+
   return (
     <View style={styles.container}>
       <CustomTabs
@@ -48,7 +56,7 @@ const DokterTabView = () => {
 
       <ScrollView contentContainerStyle={styles.cardWrapper}>
         {filteredDokters.map((item, index) => (
-          <TouchableOpacity key={index} style={styles.card}>
+          <TouchableOpacity key={index} style={styles.card} onPress={()=>navigateFormDoctor(item)}>
             <View style={styles.cardLeft}>
               <Text style={styles.name}>{item.namaDokter}</Text>
               <Text style={styles.name}>Dokter {item.spesialis}</Text>

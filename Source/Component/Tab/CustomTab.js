@@ -47,11 +47,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 25,
     fontWeight: 'bold',
-    marginBottom: 8,
+    marginBottom: 12,
     color: '#333',
     flexWrap: 'wrap', // Membungkus teks panjang
     textAlign: 'left', // atau 'center' jika ingin rata tengah
-    lineHeight: 22, // Tambahan: bikin teks lebih nyaman dibaca
+    width:'50%'
+    // lineHeight: 22, // Tambahan: bikin teks lebih nyaman dibaca
   },
   container: {
     flexDirection: 'row',
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
   },
   tabText: {
     color: '#666',
-    fontSize: 16,
+    fontSize: 14,
     textTransform: 'uppercase',
   },
   activeTabText: {

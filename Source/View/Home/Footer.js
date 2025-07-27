@@ -11,12 +11,15 @@ const Footer = ({onBackPress}) => {
   const toBooking = () => {
     navigation.navigate('book')
   }
+  const toHome = () => {
+    navigation.navigate('Home')
+  }
   const toProfilePage = () =>{
     navigation.navigate('profile')
   }
   return (
     <View style={styles.footerContainer}>
-      <TouchableOpacity style={styles.menuItem} onPress={onBackPress}>
+      <TouchableOpacity style={styles.menuItem} onPress={toHome}>
         <Image source={menuIcon1} style={styles.menuIcon} />
       </TouchableOpacity>
       <TouchableOpacity style={styles.menuItem} onPress={toBooking}>
