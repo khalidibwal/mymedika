@@ -22,6 +22,7 @@ import DokterTabView from '../View/Doctor/DokterTabView';
 import DoctorFormScreen from '../View/Doctor/DoctorFormScreen';
 import TimePickerScreen from '../View/Doctor/TimePickerScreen';
 import UserProfileScreen from '../View/Profile/UserProfileScreen';
+import SuccessScreen from '../View/Doctor/SuccessScreen';
 
 
 
@@ -45,6 +46,7 @@ function MainStackNavigator() {
         <Stack.Screen name="riwayat" component={Riwayat} options={{headerShown: false}}/>
         <Stack.Screen name="formdoctor" component={DoctorFormScreen} options={{headerShown: false}}/>
         <Stack.Screen name="timeselect" component={TimePickerScreen} options={{headerShown: false}}/>
+        <Stack.Screen name="success" component={SuccessScreen} options={{headerShown: false}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -2,11 +2,12 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { Rating } from 'react-native-ratings';
+import { API_URL } from '@env';
 
-const CardDashboard = ({ title = 'Judul', spesial = 'Konten' }) => {
+const CardDashboard = ({ title = 'Judul', spesial = 'Konten', foto }) => {
   return (
     <View style={styles.card}>
-      <Image source={require('../../../Assets/image/person.png')} style={styles.avatar}/>
+      <Image source={{uri:`${API_URL}/images/${foto}`}} style={styles.avatar}/>
       <View style={styles.cardContent}>
         <Text style={styles.cardText}>{title}</Text>
         <Text style={styles.cardText}>Spesialis {spesial}</Text>

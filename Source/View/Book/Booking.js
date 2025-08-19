@@ -13,6 +13,7 @@ import BookingCard from '../../Component/Booking/BookingCard';
 const Booking = () => {
   const navigation = useNavigation();
   const [poliklinikList, setPoliklinikList] = useState([]);
+  const [dokterList, setDokterList] = useState([])
   const [selectedPoliklinik, setSelectedPoliklinik] = useState(null);
   const [keluhan, setKeluhan] = useState('');
   const [tanggalKunjungan, setTanggalKunjungan] = useState(new Date());
@@ -27,6 +28,16 @@ const Booking = () => {
       setLoading(false);
     } catch (error) {
       console.error('Error fetching Poliklinik', error);
+      setLoading(false);
+    }
+  };
+  const fetchDokter = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/api/dokters`);
+      setDokterList(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching dokter', error);
       setLoading(false);
     }
   };
@@ -67,9 +78,12 @@ const Booking = () => {
       setBookingData(response.data.data);
       const bookingData = response.data.data;
       navigation.navigate('BookingCardScreen', { bookingData: bookingData });
+      
     } catch (error) {
       console.error('Error creating booking', error);
       Alert.alert('Error', 'Failed to create booking');
+      console.log(selectedPoliklinik,'selected poliklinik')
+      console.log(formatDate(tanggalKunjungan),'selected tangggal')
     }
   };
 

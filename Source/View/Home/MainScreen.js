@@ -70,6 +70,10 @@ const MainScreen = () => {
     navigation.navigate('dokter')
   }
 
+    useEffect(()=>{
+      console.log('Current API:', API_URL);
+    },[])
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -105,7 +109,7 @@ const MainScreen = () => {
         setLoading(false);
       } catch (error) {
         setLoading(false);
-        console.error('Failed to fetch user:', error);
+        console.error('Failed to fetch users:', error);
         // Navigate to login on error
         navigation.navigate('login'); // Adjust the screen name as necessary
       }
@@ -156,6 +160,7 @@ const MainScreen = () => {
                 <CardDashboard
                   title={item.namaDokter}
                   spesial={item.spesialis}
+                  foto={item.fotoDokter}
                 />
               </View>
             );

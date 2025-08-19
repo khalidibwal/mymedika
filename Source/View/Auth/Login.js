@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, Image, StyleSheet, Alert } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -14,6 +14,10 @@ const LoginScreen = () => {
   const [loading, setLoading] = useState(false); 
   const [user, setUser] = useRecoilState(userState);
   const navigation = useNavigation();
+
+  useEffect(()=>{
+    console.log('Current API:', API_URL);
+  },[])
 
   const handleLogin = async () => {
     setLoading(true);
